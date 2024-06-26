@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <h2>Videojuegos</h2>
+
+    <form (ngSubmit)="currentGame._id ? updateGame(currentGame._id, gameForm) : createGame(gameForm)" #gameForm="ngForm">
+        <div class="form-group">
+            <label for="title">Título:</label>
+            <input type="text" class="form-control" [(ngModel)]="currentGame.title" name="title" required>
+            <div *ngIf="gameForm.submitted && !currentGame.title" class="text-danger">El título es obligatorio.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="genre">Género:</label>
+            <input type="text" class="form-control" [(ngModel)]="currentGame.genre" name="genre" required>
+            <div *ngIf="gameForm.submitted && !currentGame.genre" class="text-danger">El género es obligatorio.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="releaseDate">Fecha de Lanzamiento:</label>
+            <input type="date" class="form-control" [(ngModel)]="currentGame.releaseDate" name="releaseDate" required>
+            <div *ngIf="gameForm.submitted && !currentGame.releaseDate" class="text-danger">La fecha de lanzamiento es obligatoria.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción:</label>
+            <input type="text" class="form-control" [(ngModel)]="currentGame.description" name="description" required>
+            <div *ngIf="gameForm.submitted && !currentGame.description" class="text-danger">La descripción es obligatoria.</div>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">URL de la imagen:</label>
+            <input type="text" class="form-control" [(ngModel)]="currentGame.imageUrl" name="imageUrl">
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{currentGame._id ? 'Actualizar': 'Agregar'}}</button>
+    </form>
+
+    <hr>
+
+    <input type="text" class="form-control mb-3" [(ngModel)]="searchQuery" (input)="searchGames()" placeholder="Buscar videojuegos...">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Género</th>
+                <th>Fecha de Lanzamiento</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            <tr *ngFor="let game of games">
+                <td>{{ game.title }}</td>
+                <td>{{ game.genre }}</td>
+                <td>{{ game.releaseDate | date }}</td>
+                <td>{{ game.description }}</td>
+                <td><img *ngIf="game.imageUrl" [src]="game.imageUrl" alt="{{ game.title }}" style="width: 50px;"></td>
+                <td>
+                    <button class="btn btn-sm btn-primary" (click)="editGame(game._id)">Editar</button>
+                    <button class="btn btn-sm btn-danger" (click)="deleteGame(game._id)">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
